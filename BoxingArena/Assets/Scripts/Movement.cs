@@ -5,9 +5,12 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
 	public float m_speed = 5.0f;
+	public float m_dashCooldown = 5.0f;
+	public float m_dashSpeed = 15.0f;
 
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
+	private bool m_canDash = true;
 
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
@@ -21,28 +24,29 @@ public class Movement : MonoBehaviour {
     }
 	
 	void FixedUpdate() {
-		// mouse location is always forward
-		if(Input.GetKey(KeyCode.W)) {
-	 		m_rb.velocity = transform.forward * m_speed; 
-		}
-		if(Input.GetKey(KeyCode.S)) {
-			m_rb.velocity = -transform.forward * m_speed; 
-		}
-		if(Input.GetKey(KeyCode.A)) {
-			m_rb.velocity = -transform.right * m_speed; 
-		}
-		if(Input.GetKey(KeyCode.D)) {
-			m_rb.velocity = transform.right * m_speed; 
+		// top if the screen is always forward rotation
+		m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f));
+
+		if(Input.GetKey(KeyCode.Space) && m_canDash) {
+			Dash(m_rb.velocity);
 		}
 
 		// slows the velocity over time if nothing else is preesed
 		m_rb.velocity = m_rb.velocity * m_velocitySlowAmount;
+	}
 
-		// top if the screen is always forward rotation
-		// m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f));
+	void Dash(Vector3 direction) {
+		m_canDash = false;
+		m_rb.velocity = direction * m_dashSpeed;
+		StartCoroutine(DashCooldown(m_dashCooldown));
 	}
 
 	float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+    }
+
+	private IEnumerator DashCooldown(float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+        m_canDash = true;
     }
 }
