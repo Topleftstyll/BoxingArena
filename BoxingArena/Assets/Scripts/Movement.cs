@@ -17,6 +17,7 @@ public class Movement : MonoBehaviour {
 	}
 
 	 void Update() {
+		// rotate the player so it faces the mouse
 		Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
 		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
