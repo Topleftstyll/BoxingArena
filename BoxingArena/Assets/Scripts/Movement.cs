@@ -26,7 +26,7 @@ public class Movement : MonoBehaviour {
 	
 	void FixedUpdate() {
 		// top if the screen is always forward rotation
-		m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f));
+		m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f));
 
 		if(Input.GetKey(KeyCode.Space) && m_canDash) {
 			Dash(m_rb.velocity);
