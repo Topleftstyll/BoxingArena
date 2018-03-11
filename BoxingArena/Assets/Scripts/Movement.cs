@@ -7,10 +7,18 @@ public class Movement : MonoBehaviour {
 	public float m_speed = 5.0f;
 	public float m_dashCooldown = 5.0f;
 	public float m_dashSpeed = 15.0f;
+	public float m_timePunchIsBig = .5f;
+	public float m_punchCoolDown = .2f;
+	public GameObject m_rightSpring;
+	public GameObject m_rightSpringExtended;
+	public GameObject m_leftSpring;
+	public GameObject m_leftSpringExtended;
 
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
+	private bool m_canRightPunch = true;
+	private bool m_canLeftPunch = true;
 
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
@@ -22,6 +30,22 @@ public class Movement : MonoBehaviour {
 		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+
+		if(Input.GetMouseButtonDown(1) && m_canRightPunch) {
+			Debug.Log("Right Click");
+			m_canRightPunch = false;
+			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightSpring, m_rightSpringExtended, false));
+			m_rightSpring.SetActive(false);
+			m_rightSpringExtended.SetActive(true);
+		}
+
+		if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
+			Debug.Log("left Click");
+			m_canLeftPunch = false;
+			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftSpring, m_leftSpringExtended, true));
+			m_leftSpring.SetActive(false);
+			m_leftSpringExtended.SetActive(true);
+		} 
     }
 	
 	void FixedUpdate() {
@@ -50,4 +74,24 @@ public class Movement : MonoBehaviour {
         yield return new WaitForSeconds(waitTime);
         m_canDash = true;
     }
+
+	private IEnumerator SetPunch(float waitTime, GameObject spring, GameObject springExtended, bool isLeftPunch) {
+        yield return new WaitForSeconds(waitTime);
+		spring.SetActive(true);
+		springExtended.SetActive(false);
+		if(isLeftPunch) {
+			StartCoroutine(WaitBetweenPunches(m_punchCoolDown, true));
+		} else {
+			StartCoroutine(WaitBetweenPunches(m_punchCoolDown, false));
+		}
+    }
+
+	private IEnumerator WaitBetweenPunches(float waitTime, bool isLeftPunch) {
+		yield return new WaitForSeconds(waitTime);
+		if(isLeftPunch) {
+			m_canLeftPunch = true;
+		} else {
+			m_canRightPunch = true;
+		}
+	}
 }
