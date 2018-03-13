@@ -9,17 +9,20 @@ public class Movement : MonoBehaviour {
 	public float m_dashSpeed = 15.0f;
 	public float m_timePunchIsBig = .5f;
 	public float m_punchCoolDown = .2f;
+	public GameObject m_rightFist;
+	public GameObject m_leftFist;
 	public GameObject m_rightSpring;
-	public GameObject m_rightSpringExtended;
 	public GameObject m_leftSpring;
-	public GameObject m_leftSpringExtended;
-
+	public GameObject m_glove;
+	public Transform m_LeftArmLocation;
+	public Transform m_RightArmLocation;
+	
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
 	private bool m_canRightPunch = true;
 	private bool m_canLeftPunch = true;
-
+	private Vector2 mouseOnScreen;
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
 	}
@@ -27,24 +30,25 @@ public class Movement : MonoBehaviour {
 	 void Update() {
 		// rotate the player so it faces the mouse
 		Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
-		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 
 		if(Input.GetMouseButtonDown(1) && m_canRightPunch) {
 			Debug.Log("Right Click");
 			m_canRightPunch = false;
-			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightSpring, m_rightSpringExtended, false));
-			m_rightSpring.SetActive(false);
-			m_rightSpringExtended.SetActive(true);
+			m_rightFist.SetActive(false);
+			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightFist, false));
+			
+			//m_rightSpringExtended.SetActive(true);
 		}
 
 		if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
 			Debug.Log("left Click");
 			m_canLeftPunch = false;
-			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftSpring, m_leftSpringExtended, true));
-			m_leftSpring.SetActive(false);
-			m_leftSpringExtended.SetActive(true);
+			m_leftFist.SetActive(false);
+			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftFist, true));
+			//m_leftSpringExtended.SetActive(true);
 		} 
     }
 	
@@ -75,10 +79,31 @@ public class Movement : MonoBehaviour {
         m_canDash = true;
     }
 
-	private IEnumerator SetPunch(float waitTime, GameObject spring, GameObject springExtended, bool isLeftPunch) {
+	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
+		if(isLeftPunch){
+			var punch = Instantiate(m_glove,m_LeftArmLocation.position,Quaternion.identity);
+			//punch.transform.parent = m_leftSpring.transform;
+			punch.transform.forward = m_LeftArmLocation.forward;
+			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 500);
+			Destroy(punch,waitTime);
+			//ToADD:PunchReturning
+			// yield return new WaitForSeconds(waitTime);
+			// punch.transform.LookAt(m_LeftArmLocation);
+			// punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 1000);
+		} else {
+			var punch = Instantiate(m_glove,m_RightArmLocation.position,Quaternion.identity);
+			//punch.transform.parent = m_rightSpring.transform;
+			punch.transform.forward = m_RightArmLocation.forward;
+			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 500);
+			Destroy(punch,waitTime);
+			//ToADD:PunchReturning
+			// yield return new WaitForSeconds(waitTime);
+			// punch.transform.LookAt(m_RightArmLocation);
+			// punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 1000);
+		}
         yield return new WaitForSeconds(waitTime);
 		spring.SetActive(true);
-		springExtended.SetActive(false);
+		//springExtended.SetActive(false);
 		if(isLeftPunch) {
 			StartCoroutine(WaitBetweenPunches(m_punchCoolDown, true));
 		} else {
