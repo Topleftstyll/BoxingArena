@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour {
 	public float m_dashSpeed = 15.0f;
 	public float m_timePunchIsBig = .2f;
 	public float m_punchCoolDown = .2f;
+	public float m_punchSpeed = 1000f;
 	public GameObject m_rightFist;
 	public GameObject m_leftFist;
 	public GameObject m_rightSpring;
@@ -16,7 +17,8 @@ public class Movement : MonoBehaviour {
 	public GameObject m_glove;
 	public Transform m_LeftArmLocation;
 	public Transform m_RightArmLocation;
-	public float m_punchSpeed = 1000f;
+
+
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
