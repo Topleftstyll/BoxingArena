@@ -17,13 +17,12 @@ public class Movement : MonoBehaviour {
 	public GameObject m_glove;
 	public Transform m_LeftArmLocation;
 	public Transform m_RightArmLocation;
-
+	public bool m_canRightPunch = true;
+	public bool m_canLeftPunch = true;
 
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
-	private bool m_canRightPunch = true;
-	private bool m_canLeftPunch = true;
 	private Vector2 mouseOnScreen; 
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
@@ -81,11 +80,15 @@ public class Movement : MonoBehaviour {
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
 		if(isLeftPunch){
 			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
+			punch.tag = "LeftFist";
+			Debug.Log(punch.tag);
 			punch.transform.forward = m_LeftArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
 			Destroy(punch, waitTime);
 		} else {
 			var punch = Instantiate(m_glove, m_RightArmLocation.position, Quaternion.identity);
+			punch.tag = "RightFist";
+			Debug.Log(punch.tag);
 			punch.transform.forward = m_RightArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
 			Destroy(punch, waitTime);
