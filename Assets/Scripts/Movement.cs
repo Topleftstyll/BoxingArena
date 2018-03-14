@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour {
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
 	private Vector2 mouseOnScreen; 
+
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
 	}
@@ -49,14 +50,14 @@ public class Movement : MonoBehaviour {
     }
 	
 	void FixedUpdate() {
-		// top if the screen is always forward rotation
+		// top of the screen is always forward rotation
 		m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f));
 
 		if(Input.GetKey(KeyCode.Space) && m_canDash) {
 			Dash(m_rb.velocity);
 		}
 
-		// slows the velocity over time if nothing else is preesed
+		// slows the velocity over time if nothing else is pressed
 		m_rb.velocity = m_rb.velocity * m_velocitySlowAmount;
 	}
 
@@ -76,7 +77,7 @@ public class Movement : MonoBehaviour {
     }
 
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
-		if(isLeftPunch){
+		if(isLeftPunch) {
 			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
 			punch.tag = "LeftFist";
 			punch.GetComponent<PunchCollider>().m_player = this;
