@@ -78,13 +78,15 @@ public class Movement : MonoBehaviour {
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
 		if(isLeftPunch){
 			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
-			Debug.Log(punch.tag);
+			punch.tag = "LeftFist";
+			punch.GetComponent<PunchCollider>().m_player = this;
 			punch.transform.forward = m_LeftArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
 			Destroy(punch, waitTime);
 		} else {
 			var punch = Instantiate(m_glove, m_RightArmLocation.position, Quaternion.identity);
-			Debug.Log(punch.tag);
+			punch.tag = "RightFist";
+			punch.GetComponent<PunchCollider>().m_player = this;
 			punch.transform.forward = m_RightArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
 			Destroy(punch, waitTime);

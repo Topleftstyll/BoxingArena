@@ -5,16 +5,20 @@ using UnityEngine;
 public class PunchCollider : MonoBehaviour {
 	public Movement m_player;
 	public void OnCollisionEnter(Collision other){
+		
 		if(other.gameObject.tag == "Enemy"){
 			other.gameObject.GetComponent<Rigidbody>().AddForce(other.gameObject.transform.forward * -500);
 			
 		}
-		Destroy(this);
-			if(this.transform.parent.gameObject.tag == "LeftFist"){
+		Destroy(this.gameObject);
+		
+			if(gameObject.tag == "LeftFist"){
+				Debug.Log("Left");
 				m_player.m_leftFist.SetActive(true);
 				m_player.m_canLeftPunch = true;
 			}
-			else if(this.transform.parent.gameObject.tag == "RightFist"){
+			else if(gameObject.tag == "RightFist"){
+				Debug.Log("Right");
 				m_player.m_rightFist.SetActive(true);
 				m_player.m_canRightPunch = true;
 			}

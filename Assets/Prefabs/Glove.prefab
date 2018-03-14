@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33122829872002578}
   - component: {fileID: 135932191954542340}
   - component: {fileID: 23684271925837684}
-  - component: {fileID: 114133750348770762}
   m_Layer: 0
   m_Name: LeftGlove
   m_TagString: Untagged
@@ -40,6 +39,7 @@ GameObject:
   - component: {fileID: 4699159761887576}
   - component: {fileID: 96823941127835618}
   - component: {fileID: 54257094788256814}
+  - component: {fileID: 114816668104854852}
   m_Layer: 0
   m_Name: Glove
   m_TagString: Untagged
@@ -217,18 +217,18 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
---- !u!114 &114133750348770762
+--- !u!114 &114816668104854852
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1353919803023546}
+  m_GameObject: {fileID: 1621246058347644}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c235a2af255e63b48bc2e8f83be06d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 114977650673320724, guid: b0d5a9f92a971f94eaa1e7a5c92ae0f1, type: 2}
+  m_player: {fileID: 0}
 --- !u!135 &135932191954542340
 SphereCollider:
   m_ObjectHideFlags: 1
