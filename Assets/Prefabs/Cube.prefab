@@ -261,7 +261,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1260143247812934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07, y: 0, z: 0}
+  m_LocalPosition: {x: -0.07, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4138630042496252}
@@ -274,7 +274,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1635299077092042}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 0, z: 0}
+  m_LocalPosition: {x: -0.06, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4758327039790030}
@@ -639,7 +639,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1679641522227554}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -651,7 +651,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1647217213893284}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -670,15 +670,16 @@ MonoBehaviour:
   m_speed: 5
   m_dashCooldown: 5
   m_dashSpeed: 15
-  m_timePunchIsBig: 0.5
+  m_timePunchIsBig: 0.2
   m_punchCoolDown: 0.4
   m_rightFist: {fileID: 1656367858366796}
   m_leftFist: {fileID: 1465640759448836}
   m_rightSpring: {fileID: 1647217213893284}
   m_leftSpring: {fileID: 1679641522227554}
-  m_glove: {fileID: 1445752362085690, guid: 7b2458c188ccd2a46a64c687ac4e73ef, type: 2}
+  m_glove: {fileID: 1621246058347644, guid: eef9bef11243c104787eb0c0934af6e1, type: 2}
   m_LeftArmLocation: {fileID: 4544457589975380}
   m_RightArmLocation: {fileID: 4672008029538388}
+  m_punchSpeed: 2000
 --- !u!135 &135500667721472684
 SphereCollider:
   m_ObjectHideFlags: 1

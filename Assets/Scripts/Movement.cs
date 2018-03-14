@@ -7,8 +7,9 @@ public class Movement : MonoBehaviour {
 	public float m_speed = 5.0f;
 	public float m_dashCooldown = 5.0f;
 	public float m_dashSpeed = 15.0f;
-	public float m_timePunchIsBig = .5f;
+	public float m_timePunchIsBig = .2f;
 	public float m_punchCoolDown = .2f;
+	public float m_punchSpeed = 1000f;
 	public GameObject m_rightFist;
 	public GameObject m_leftFist;
 	public GameObject m_rightSpring;
@@ -16,13 +17,14 @@ public class Movement : MonoBehaviour {
 	public GameObject m_glove;
 	public Transform m_LeftArmLocation;
 	public Transform m_RightArmLocation;
-	
+
+
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;
 	private bool m_canRightPunch = true;
 	private bool m_canLeftPunch = true;
-	private Vector2 mouseOnScreen;
+	private Vector2 mouseOnScreen; 
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
 	}
@@ -39,8 +41,6 @@ public class Movement : MonoBehaviour {
 			m_canRightPunch = false;
 			m_rightFist.SetActive(false);
 			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightFist, false));
-			
-			//m_rightSpringExtended.SetActive(true);
 		}
 
 		if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
@@ -48,7 +48,6 @@ public class Movement : MonoBehaviour {
 			m_canLeftPunch = false;
 			m_leftFist.SetActive(false);
 			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftFist, true));
-			//m_leftSpringExtended.SetActive(true);
 		} 
     }
 	
@@ -81,29 +80,18 @@ public class Movement : MonoBehaviour {
 
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
 		if(isLeftPunch){
-			var punch = Instantiate(m_glove,m_LeftArmLocation.position,Quaternion.identity);
-			//punch.transform.parent = m_leftSpring.transform;
+			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
 			punch.transform.forward = m_LeftArmLocation.forward;
-			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 500);
-			Destroy(punch,waitTime);
-			//ToADD:PunchReturning
-			// yield return new WaitForSeconds(waitTime);
-			// punch.transform.LookAt(m_LeftArmLocation);
-			// punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 1000);
+			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+			Destroy(punch, waitTime);
 		} else {
-			var punch = Instantiate(m_glove,m_RightArmLocation.position,Quaternion.identity);
-			//punch.transform.parent = m_rightSpring.transform;
+			var punch = Instantiate(m_glove, m_RightArmLocation.position, Quaternion.identity);
 			punch.transform.forward = m_RightArmLocation.forward;
-			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 500);
-			Destroy(punch,waitTime);
-			//ToADD:PunchReturning
-			// yield return new WaitForSeconds(waitTime);
-			// punch.transform.LookAt(m_RightArmLocation);
-			// punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * 1000);
+			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+			Destroy(punch, waitTime);
 		}
         yield return new WaitForSeconds(waitTime);
 		spring.SetActive(true);
-		//springExtended.SetActive(false);
 		if(isLeftPunch) {
 			StartCoroutine(WaitBetweenPunches(m_punchCoolDown, true));
 		} else {
