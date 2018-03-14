@@ -36,14 +36,12 @@ public class Movement : MonoBehaviour {
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 
 		if(Input.GetMouseButtonDown(1) && m_canRightPunch) {
-			Debug.Log("Right Click");
 			m_canRightPunch = false;
 			m_rightFist.SetActive(false);
 			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightFist, false));
 		}
 
 		if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
-			Debug.Log("left Click");
 			m_canLeftPunch = false;
 			m_leftFist.SetActive(false);
 			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftFist, true));
@@ -80,14 +78,12 @@ public class Movement : MonoBehaviour {
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
 		if(isLeftPunch){
 			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
-			punch.tag = "LeftFist";
 			Debug.Log(punch.tag);
 			punch.transform.forward = m_LeftArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
 			Destroy(punch, waitTime);
 		} else {
 			var punch = Instantiate(m_glove, m_RightArmLocation.position, Quaternion.identity);
-			punch.tag = "RightFist";
 			Debug.Log(punch.tag);
 			punch.transform.forward = m_RightArmLocation.forward;
 			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
