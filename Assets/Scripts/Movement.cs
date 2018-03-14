@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Movement : MonoBehaviour {
+public class Movement : NetworkBehaviour {
 
 	public float m_speed = 5.0f;
 	public float m_dashCooldown = 5.0f;
@@ -19,6 +20,7 @@ public class Movement : MonoBehaviour {
 	public Transform m_RightArmLocation;
 	public bool m_canRightPunch = true;
 	public bool m_canLeftPunch = true;
+	public GameObject m_pauseMenu;
 
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
@@ -27,34 +29,48 @@ public class Movement : MonoBehaviour {
 
 	void Start() {
 		m_rb = GetComponent<Rigidbody>();
+		PauseMenu.m_isOn = false;
 	}
 
 	 void Update() {
-		// rotate the player so it faces the mouse
-		Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
-		 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-		float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
-		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
+		if(!PauseMenu.m_isOn) {
+			// rotate the player so it faces the mouse
+			Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
+			mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+			float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
+			transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 
-		if(Input.GetMouseButtonDown(1) && m_canRightPunch) {
-			m_canRightPunch = false;
-			m_rightFist.SetActive(false);
-			StartCoroutine(SetPunch(m_timePunchIsBig, m_rightFist, false));
+			if(Input.GetMouseButtonDown(1) && m_canRightPunch) {
+				m_canRightPunch = false;
+				m_rightFist.SetActive(false);
+				StartCoroutine(SetPunch(m_timePunchIsBig, m_rightFist, false));
+			}
+
+			if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
+				m_canLeftPunch = false;
+				m_leftFist.SetActive(false);
+				StartCoroutine(SetPunch(m_timePunchIsBig, m_leftFist, true));
+			}
 		}
 
-		if(Input.GetMouseButtonDown(0) && m_canLeftPunch) {
-			m_canLeftPunch = false;
-			m_leftFist.SetActive(false);
-			StartCoroutine(SetPunch(m_timePunchIsBig, m_leftFist, true));
-		} 
+		if(Input.GetKeyDown(KeyCode.Escape)) {
+			TogglePauseMenu();
+		}
     }
+
+	void TogglePauseMenu() {
+		m_pauseMenu.SetActive(!m_pauseMenu.activeSelf);
+		PauseMenu.m_isOn = m_pauseMenu.activeSelf;
+	}
 	
 	void FixedUpdate() {
-		// top of the screen is always forward rotation
-		m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f));
+		if(!PauseMenu.m_isOn) {
+			// top of the screen is always forward rotation
+			m_rb.velocity = new Vector3(Mathf.Lerp(0, Input.GetAxis("Horizontal") * m_speed, 0.8f), 0, Mathf.Lerp(0, Input.GetAxis("Vertical") * m_speed, 0.8f));
 
-		if(Input.GetKey(KeyCode.Space) && m_canDash) {
-			Dash(m_rb.velocity);
+			if(Input.GetKey(KeyCode.Space) && m_canDash) {
+				Dash(m_rb.velocity);
+			}
 		}
 
 		// slows the velocity over time if nothing else is pressed
@@ -76,21 +92,40 @@ public class Movement : MonoBehaviour {
         m_canDash = true;
     }
 
+	[Command]
+	void CmdRightPunch(GameObject punch) {
+		punch.tag = "RightFist";
+		punch.GetComponent<PunchCollider>().m_player = this;
+		punch.transform.forward = m_RightArmLocation.forward;
+		punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+		NetworkServer.Spawn(punch);
+	}
+
+	[Command]
+	void CmdLeftPunch(GameObject punch) {
+		punch.tag = "LeftFist";
+		punch.GetComponent<PunchCollider>().m_player = this;
+		punch.transform.forward = m_LeftArmLocation.forward;
+		punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+		NetworkServer.Spawn(punch);
+	}
+
+	[Command]
+	void CmdDestroy(GameObject punch, float waitTime) {
+		NetworkServer.Destroy(punch);
+	}
+
 	private IEnumerator SetPunch(float waitTime, GameObject spring, bool isLeftPunch) {
 		if(isLeftPunch) {
 			var punch = Instantiate(m_glove, m_LeftArmLocation.position, Quaternion.identity);
-			punch.tag = "LeftFist";
-			punch.GetComponent<PunchCollider>().m_player = this;
-			punch.transform.forward = m_LeftArmLocation.forward;
-			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+			CmdLeftPunch(punch);
 			Destroy(punch, waitTime);
+			CmdDestroy(punch, waitTime);
 		} else {
 			var punch = Instantiate(m_glove, m_RightArmLocation.position, Quaternion.identity);
-			punch.tag = "RightFist";
-			punch.GetComponent<PunchCollider>().m_player = this;
-			punch.transform.forward = m_RightArmLocation.forward;
-			punch.GetComponent<Rigidbody>().AddForce(punch.transform.forward * m_punchSpeed);
+			CmdRightPunch(punch);
 			Destroy(punch, waitTime);
+			CmdDestroy(punch, waitTime);
 		}
         yield return new WaitForSeconds(waitTime);
 		spring.SetActive(true);
