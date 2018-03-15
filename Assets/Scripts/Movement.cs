@@ -11,17 +11,21 @@ public class Movement : NetworkBehaviour {
 	public float m_timePunchIsBig = .2f;
 	public float m_punchCoolDown = .2f;
 	public float m_punchSpeed = 1000f;
+	public float m_punchForce;
 	public GameObject m_rightFist;
 	public GameObject m_leftFist;
 	public GameObject m_rightSpring;
 	public GameObject m_leftSpring;
 	public GameObject m_glove;
+	public GameObject m_doubledmgIndicator;
+	public GameObject m_shieldIndicator;
 	public Transform m_LeftArmLocation;
 	public Transform m_RightArmLocation;
 	public bool m_canRightPunch = true;
 	public bool m_canLeftPunch = true;
 	public GameObject m_pauseMenu;
-
+	public bool m_invul;
+	
 	private Rigidbody m_rb;
 	private float m_velocitySlowAmount = 0.8f;
 	private bool m_canDash = true;

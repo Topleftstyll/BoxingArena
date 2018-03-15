@@ -68,6 +68,8 @@ public class GameManager : NetworkBehaviour {
 		} else {
 			m_gameStarted = true;
 			m_countDownText.gameObject.SetActive(false);
-		}
+		}	
     }
+
+	
 }

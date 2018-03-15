@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4632599268772010}
   - component: {fileID: 33656721581320116}
-  - component: {fileID: 135865398184159082}
   - component: {fileID: 23255523434559908}
   - component: {fileID: 114524471634818564}
   m_Layer: 0
@@ -39,7 +38,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4191570445026316}
   - component: {fileID: 33087433660494694}
-  - component: {fileID: 135770145411543156}
   - component: {fileID: 23300363150688250}
   - component: {fileID: 114811920096785726}
   m_Layer: 0
@@ -57,6 +55,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4824610083064916}
+  - component: {fileID: 135593219471887902}
+  - component: {fileID: 114708837085282350}
   m_Layer: 0
   m_Name: DoublePushpowerup
   m_TagString: Untagged
@@ -126,8 +126,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1599738252242362}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1520428, y: 1.838, z: -5.443}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.07, y: -0.17957807, z: -0.8}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4632599268772010}
@@ -231,6 +231,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 65
   reverse: 0
+--- !u!114 &114708837085282350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1599738252242362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34315e359aad3b469ec73fc54869b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Powermgr: {fileID: 0}
+  powertype: 
 --- !u!114 &114811920096785726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -244,24 +257,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 65
   reverse: 1
---- !u!135 &135770145411543156
+--- !u!135 &135593219471887902
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1312886570668780}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &135865398184159082
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1039246394706484}
+  m_GameObject: {fileID: 1599738252242362}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -328,7 +329,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1020400752
+  randomSeed: -1130525741
   InitialModule:
     serializedVersion: 3
     enabled: 1
