@@ -40,6 +40,8 @@ GameObject:
   - component: {fileID: 96823941127835618}
   - component: {fileID: 54257094788256814}
   - component: {fileID: 114816668104854852}
+  - component: {fileID: 114019069471106218}
+  - component: {fileID: 114080680116935412}
   m_Layer: 0
   m_Name: Glove
   m_TagString: Untagged
@@ -217,6 +219,59 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
+--- !u!114 &114019069471106218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1621246058347644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 238
+    i1: 249
+    i2: 190
+    i3: 241
+    i4: 18
+    i5: 67
+    i6: 193
+    i7: 4
+    i8: 120
+    i9: 126
+    i10: 176
+    i11: 192
+    i12: 147
+    i13: 74
+    i14: 246
+    i15: 225
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114080680116935412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1621246058347644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.033333335
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114816668104854852
 MonoBehaviour:
   m_ObjectHideFlags: 1
